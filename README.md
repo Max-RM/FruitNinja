@@ -104,4 +104,4 @@ Archives go to `Archives\`.
 | `Publish/<rid>/FruitNinja.cmd` | Shortcut to Start-Game.bat |
 | `Publish/<rid>/FruitNinja.ini` | Per-architecture config (cursor visibility) |
 
-Ported by MaxRM, TNT ENTERTAINMENT inc organization in 2026 on July 18.
+Ported by MaxRM, TNT ENTERTAINMENT inc organization in 2026 on August 3.
