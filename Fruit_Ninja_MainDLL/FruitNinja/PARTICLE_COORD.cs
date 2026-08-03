@@ -1,0 +1,7 @@
+namespace FruitNinja;
+
+internal enum PARTICLE_COORD
+{
+	PARTICLE_COORD_GLOBAL,
+	PARTICLE_COORD_LOCAL
+}

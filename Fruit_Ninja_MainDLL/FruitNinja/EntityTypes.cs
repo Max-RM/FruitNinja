@@ -1,0 +1,15 @@
+namespace FruitNinja;
+
+public enum EntityTypes
+{
+	ENTITY_BEGIN = 0,
+	ENTITY_FRUIT = 0,
+	ENTITY_BOMB = 1,
+	ENTITY_COIN = 2,
+	ENTITY_SLASH = 3,
+	ENTITY_BOMB_BLAST = 4,
+	ENTITY_JIBLET = 5,
+	ENTITY_FRUIT_RAY = 6,
+	ENTITY_MAX = 7,
+	ENTITY_END = 7
+}

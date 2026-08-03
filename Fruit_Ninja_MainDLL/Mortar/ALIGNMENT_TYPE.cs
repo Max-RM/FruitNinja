@@ -1,0 +1,13 @@
+namespace Mortar;
+
+public enum ALIGNMENT_TYPE
+{
+	ALIGN_LEFT = 1,
+	ALIGN_RIGHT = 2,
+	ALIGN_HCENTER = 3,
+	ALIGN_TOP = 4,
+	ALIGN_BOTTOM = 8,
+	ALIGN_VCENTER = 12,
+	ALIGN_CENTER = 15,
+	ALIGN_JUSTIFY = 16
+}

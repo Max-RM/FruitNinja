@@ -1,0 +1,10 @@
+namespace Mortar;
+
+public enum MessageType
+{
+	MESSAGE_ACTIVE,
+	MESSAGE_DORMANT,
+	MESSAGE_TRIGGER,
+	MESSAGE_UNTRIGGER,
+	MESSAGE_MAX
+}

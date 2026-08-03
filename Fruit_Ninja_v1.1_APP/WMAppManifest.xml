@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Deployment xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" AppPlatformVersion="7.1" xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment">
+  <App Author="Microsoft Studios™" Description="" Genre="apps.games" HubType="0" ProductID="{7826ea3a-a287-413b-9338-0f708ba27963}" Publisher="Microsoft Studios™" RuntimeType="XNA" Title="Fruit Ninja" Version="1.1.0.0" xmlns="">
+    <IconPath IsRelative="true" IsResource="false">FNIcon_64x64.png</IconPath>
+    <Capabilities>
+      <Capability Name="ID_CAP_NETWORKING" />
+      <Capability Name="ID_CAP_MEDIALIB" />
+    </Capabilities>
+    <Tasks>
+      <DefaultTask Name="_default" />
+    </Tasks>
+    <Tokens>
+      <PrimaryToken TokenID="FNWP72Token" TaskName="_default">
+        <TemplateType5>
+          <BackgroundImageURI IsRelative="true" IsResource="false">FNIcon_173x173.png</BackgroundImageURI>
+          <Count>0</Count>
+          <Title>Fruit Ninja</Title>
+        </TemplateType5>
+      </PrimaryToken>
+    </Tokens>
+  </App>
+</Deployment>

@@ -1,0 +1,11 @@
+namespace Mortar;
+
+public enum COLISIONOBJECT
+{
+	COL_AABB,
+	COL_SPHERE,
+	COL_LINE,
+	COL_SHAPE2D,
+	COL_SATBOX,
+	COL_OBJECTS_MAX
+}

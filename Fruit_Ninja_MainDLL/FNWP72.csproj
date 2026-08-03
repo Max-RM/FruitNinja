@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>FruitNinja</AssemblyName>
+    <RootNamespace />
+    <ApplicationId>FruitNinja</ApplicationId>
+    <ApplicationDisplayVersion>1.7.2</ApplicationDisplayVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RollForward>Major</RollForward>
+    <ApplicationIcon>..\tools\launcher\FruitNinja.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-arm'">
+    <UseAppHost>false</UseAppHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Microsoft.Xna.Framework.RuntimeProfile" />
+    <EmbeddedResource Include="Microsoft.Xna.Framework.RuntimeProfile" LogicalName="Microsoft.Xna.Framework.RuntimeProfile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\Fruit_Ninja_v1.1_APP\Content\**\*">
+      <Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Fruit_Ninja_v1.1_APP\Images\**\*">
+      <Link>Images\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Fruit_Ninja_v1.1_APP\*.wma">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

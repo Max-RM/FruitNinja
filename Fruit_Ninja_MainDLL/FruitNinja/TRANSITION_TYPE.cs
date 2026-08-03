@@ -1,0 +1,7 @@
+namespace FruitNinja;
+
+public enum TRANSITION_TYPE
+{
+	TRANSITION_TYPE_SCALE = 1,
+	TRANSITION_TYPE_FADE
+}
