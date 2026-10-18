@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using FNWP72.Engine;
 using FruitNinja;
@@ -339,6 +340,8 @@ public class TheGame : Microsoft.Xna.Framework.Game
 
 	public bool BackButtonWasPressed;
 
+	public bool EscapeButtonWasPressed;
+
 	private bool backButtonDownLast;
 
 	private bool gameUpdateRequired;
@@ -366,6 +369,18 @@ public class TheGame : Microsoft.Xna.Framework.Game
 	private GamePadState state_curr;
 
 	private MouseState _prevMouseState;
+
+	private KeyboardState _prevKeyboardState;
+
+	private bool _isFullscreen;
+
+	private bool _startFullscreen;
+
+	private int _windowedWidth = 800;
+
+	private int _windowedHeight = 480;
+
+	private Microsoft.Xna.Framework.Point _windowedPosition;
 
 	private int skip;
 
@@ -523,6 +538,109 @@ public class TheGame : Microsoft.Xna.Framework.Game
 		return defaultValue;
 	}
 
+	private void SetFullscreen(bool fullscreen)
+	{
+		if (graphics == null)
+		{
+			return;
+		}
+		try
+		{
+			if (fullscreen)
+			{
+				if (!_isFullscreen)
+				{
+					_windowedWidth = ((Microsoft.Xna.Framework.Game)this).Window.ClientBounds.Width;
+					_windowedHeight = ((Microsoft.Xna.Framework.Game)this).Window.ClientBounds.Height;
+					_windowedPosition = ((Microsoft.Xna.Framework.Game)this).Window.Position;
+				}
+				DisplayMode displayMode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+				graphics.HardwareModeSwitch = false;
+				graphics.PreferredBackBufferWidth = displayMode.Width;
+				graphics.PreferredBackBufferHeight = displayMode.Height;
+				graphics.IsFullScreen = true;
+				graphics.ApplyChanges();
+				((Microsoft.Xna.Framework.Game)this).Window.IsBorderless = true;
+				CoverMonitor();
+			}
+			else
+			{
+				graphics.IsFullScreen = false;
+				((Microsoft.Xna.Framework.Game)this).Window.IsBorderless = false;
+				graphics.HardwareModeSwitch = true;
+				graphics.PreferredBackBufferWidth = _windowedWidth;
+				graphics.PreferredBackBufferHeight = _windowedHeight;
+				graphics.ApplyChanges();
+				((Microsoft.Xna.Framework.Game)this).Window.Position = _windowedPosition;
+			}
+			_isFullscreen = fullscreen;
+		}
+		catch
+		{
+		}
+	}
+
+	private void CoverMonitor()
+	{
+		try
+		{
+			IntPtr handle = ((Microsoft.Xna.Framework.Game)this).Window.Handle;
+			if (handle == IntPtr.Zero)
+			{
+				return;
+			}
+			IntPtr monitor = MonitorFromWindow(handle, MONITOR_DEFAULTTONEAREST);
+			MONITORINFO mi = default(MONITORINFO);
+			mi.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+			if (GetMonitorInfo(monitor, ref mi))
+			{
+				int width = mi.rcMonitor.Right - mi.rcMonitor.Left;
+				int height = mi.rcMonitor.Bottom - mi.rcMonitor.Top;
+				SetWindowPos(handle, IntPtr.Zero, mi.rcMonitor.Left, mi.rcMonitor.Top, width, height, SWP_SHOWWINDOW);
+			}
+		}
+		catch
+		{
+		}
+	}
+
+	private const uint MONITOR_DEFAULTTONEAREST = 2u;
+
+	private const uint SWP_SHOWWINDOW = 64u;
+
+	[StructLayout(LayoutKind.Sequential)]
+	private struct RECT
+	{
+		public int Left;
+
+		public int Top;
+
+		public int Right;
+
+		public int Bottom;
+	}
+
+	[StructLayout(LayoutKind.Sequential)]
+	private struct MONITORINFO
+	{
+		public int cbSize;
+
+		public RECT rcMonitor;
+
+		public RECT rcWork;
+
+		public uint dwFlags;
+	}
+
+	[DllImport("user32.dll")]
+	private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+	[DllImport("user32.dll")]
+	private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+	[DllImport("user32.dll")]
+	private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
 	private static string ERROR_MESSAGE(uint code)
 	{
 		return $"Error 0x{code:x} occurred. Fruit Ninja cannot continue and needs to exit.";
@@ -562,6 +680,7 @@ public class TheGame : Microsoft.Xna.Framework.Game
 		graphics.ApplyChanges();
 		((Microsoft.Xna.Framework.Game)this).Window.AllowUserResizing = true;
 		((Microsoft.Xna.Framework.Game)this).IsMouseVisible = ReadIniBool("ShowCursor", false);
+		_startFullscreen = ReadIniBool("Fullscreen", false);
 		fgame = new FruitGame();
 		CultureInfo currentCulture = CultureInfo.CurrentCulture;
 		StringTableUtils.Language language = StringTableUtils.ParseLanguageFromCulture(currentCulture.Name);
@@ -704,6 +823,10 @@ public class TheGame : Microsoft.Xna.Framework.Game
 			}
 			Guide.BeginShowMessageBox(ERROR_TITLE_1, text, (IEnumerable<string>)array, 0, (MessageBoxIcon)3, (AsyncCallback)InitOrLoadFailedCallback, (object)null);
 		}
+		if (_startFullscreen)
+		{
+			SetFullscreen(true);
+		}
 	}
 
 	private void InitOrLoadFailedCallback(IAsyncResult result)
@@ -806,6 +929,13 @@ public class TheGame : Microsoft.Xna.Framework.Game
 		{
 			return;
 		}
+		KeyboardState keyboardState = Keyboard.GetState();
+		if (keyboardState.IsKeyDown(Keys.F11) && _prevKeyboardState.IsKeyUp(Keys.F11))
+		{
+			SetFullscreen(!_isFullscreen);
+		}
+		EscapeButtonWasPressed = keyboardState.IsKeyDown(Keys.Escape) && _prevKeyboardState.IsKeyUp(Keys.Escape);
+		_prevKeyboardState = keyboardState;
 		if (skip > 0)
 		{
 			skip--;
@@ -1059,6 +1189,7 @@ public class TheGame : Microsoft.Xna.Framework.Game
 			fgame.Update(timeSinceLastUpdate);
 			AchievementManager.Update(gameTime);
 			BackButtonWasPressed = false;
+			EscapeButtonWasPressed = false;
 			try
 			{
 				base.Update(gameTime);

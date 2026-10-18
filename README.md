@@ -32,15 +32,28 @@ Delete these files to reset all progress and settings.
 
 ## Configuration
 
-Place `FruitNinja.ini` next to the executable to control mouse cursor visibility:
+Place `FruitNinja.ini` next to the executable to control the cursor and startup fullscreen mode:
 
 ```ini
 [Settings]
 ShowCursor=1
+Fullscreen=0
 ```
 
 - `ShowCursor=1` — cursor visible over game window (default for x64, x86)
 - `ShowCursor=0` — cursor hidden (default for ARM32, ARM64)
+- `Fullscreen=1` — start the game in fullscreen mode
+- `Fullscreen=0` — start windowed (default)
+
+Press `F11` in-game to toggle fullscreen at any time.
+
+## Controls
+
+- `F11` — toggle fullscreen (hides the taskbar)
+- `Esc` — pause during play
+- `Esc` — in the pause menu, open the quit-level confirmation
+- `Esc` — on the game over screen, return to the main menu
+- `Esc` — in the main menu, open the quit-game confirmation
 
 ## Build
 
@@ -102,6 +115,6 @@ Archives go to `Archives\`.
 | `Publish/<rid>/FruitNinja.Debug.exe` | Debug launcher (console subsystem, shows crash logs) |
 | `Publish/<rid>/Start-Game.bat` | Fallback launcher |
 | `Publish/<rid>/FruitNinja.cmd` | Shortcut to Start-Game.bat |
-| `Publish/<rid>/FruitNinja.ini` | Per-architecture config (cursor visibility) |
+| `Publish/<rid>/FruitNinja.ini` | Per-architecture config (cursor visibility, fullscreen) |
 
 Ported by MaxRM, TNT ENTERTAINMENT inc organization in 2026 on August 3.

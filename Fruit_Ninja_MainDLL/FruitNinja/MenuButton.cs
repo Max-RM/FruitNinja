@@ -67,6 +67,8 @@ public class MenuButton : HUDControl3d
 
 	public bool m_triggerOnBackPress;
 
+	public bool m_triggerOnEscape = true;
+
 	public float m_overallScratchScale;
 
 	public Vector3 m_newSymbolOffset;
@@ -527,12 +529,13 @@ public class MenuButton : HUDControl3d
 		}
 		if (m_enabled)
 		{
-			if (m_link != null && TheGame.instance.BackButtonWasPressed && m_triggerOnBackPress)
+			bool backTriggered = TheGame.instance.BackButtonWasPressed || (TheGame.instance.EscapeButtonWasPressed && m_triggerOnEscape);
+			if (m_link != null && backTriggered && m_triggerOnBackPress)
 			{
 				Vector3 proj = new Vector3(1f, 0f, 0f);
 				m_link.CollisionResponse(null, 0u, 0u, ref proj);
 			}
-			else if (TheGame.instance.BackButtonWasPressed && m_triggerOnBackPress)
+			else if (backTriggered && m_triggerOnBackPress)
 			{
 				TouchReleased();
 			}

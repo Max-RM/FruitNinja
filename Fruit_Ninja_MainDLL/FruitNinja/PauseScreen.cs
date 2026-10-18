@@ -269,6 +269,7 @@ public class PauseScreen : HUDControl3d
 			m_pauseButtonScale = (m_pauseButton.m_originalScale = Vector3.One * 64f * Game.HUD_SCALE);
 			m_pauseButton.m_outerBound = 500f;
 			m_pauseButton.m_triggerOnBackPress = true;
+			m_pauseButton.m_triggerOnEscape = false;
 			m_pauseTexture = m_pauseButton.m_texture;
 			m_playTexture = TextureManager.GetInstance().Load("textureswp7/play_button.tex");
 		}
@@ -321,6 +322,10 @@ public class PauseScreen : HUDControl3d
 			{
 				m_pauseButton.m_enabled = true;
 			}
+			if (TheGame.instance.EscapeButtonWasPressed && IsEnabled())
+			{
+				PauseGameCallback();
+			}
 			break;
 		case PS.PS_IN:
 			m_time += (1f - m_time) * 0.25f;
@@ -340,6 +345,10 @@ public class PauseScreen : HUDControl3d
 			if ((int)buttons.Back == 1)
 			{
 				ContinueGameCallback();
+			}
+			if (TheGame.instance.EscapeButtonWasPressed)
+			{
+				QuitGameCallback();
 			}
 			break;
 		}

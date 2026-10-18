@@ -540,7 +540,7 @@ public class MainScreen : HUDControl3d
 			m_pos = new Vector3(0f, (Game.SCREEN_HEIGHT + m_scale.Y - m_scale.Y * num * 2f) * 0.5f, 0f);
 			break;
 		case MS.MS_WAIT:
-			if (!Guide.IsVisible && TheGame.instance.BackButtonWasPressed)
+			if (!Guide.IsVisible && (TheGame.instance.BackButtonWasPressed || TheGame.instance.EscapeButtonWasPressed))
 			{
 				string[] array = new string[2] { NO, YES };
 				Guide.BeginShowMessageBox(TheGame.instance.stringTable.GetString(929), TheGame.instance.stringTable.GetString(1009), (IEnumerable<string>)array, 0, (MessageBoxIcon)3, (AsyncCallback)ExitGameCallback, (object)null);

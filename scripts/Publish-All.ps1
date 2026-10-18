@@ -83,6 +83,8 @@ function New-IniFile {
 [Settings]
 ; Show mouse cursor over the game window (1=yes, 0=no)
 ShowCursor=$showCursor
+; Start the game in fullscreen mode (1=yes, 0=no). F11 toggles fullscreen in-game.
+Fullscreen=0
 "@
     Set-Content -Path $iniPath -Value $iniContent -Encoding ASCII
     Write-Host "  Ini: $iniPath (ShowCursor=$showCursor)"
